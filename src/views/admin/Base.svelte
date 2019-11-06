@@ -11,35 +11,35 @@
   <div class="w-full block flex-grow md:flex md:items-center md:w-auto">
     <div class="text-sm md:flex-grow">
       <a
-        href="/annoucements"
+        href="/admin/annoucements"
         class="block px-2 mt-4 md:inline-block md:mt-0 text-blue-100
         hover:text-white mr-4"
         use:link>
         Announcements
       </a>
       <a
-        href="/mediacontents"
+        href="/admin/mediacontents"
         class="block px-2 mt-4 md:inline-block md:mt-0 text-blue-100
         hover:text-white mr-4"
         use:link>
         Media and Contents
       </a>
       <a
-        href="/userdatabase"
+        href="/admin/userdatabase"
         class="block px-2 mt-4 md:inline-block md:mt-0 text-blue-100
         hover:text-white"
         use:link>
         User and Database
       </a>
       <a
-        href="/notifications"
+        href="/admin/notifications"
         class="block px-2 mt-4 md:inline-block md:mt-0 text-blue-100
         hover:text-white"
         use:link>
         Notifications
       </a>
       <a
-        href="/schedule"
+        href="/admin/schedule"
         class="block px-2 mt-4 md:inline-block md:mt-0 text-blue-100
         hover:text-white"
         use:link>

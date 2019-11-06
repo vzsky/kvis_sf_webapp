@@ -1,7 +1,7 @@
 <script>
   import Base from "./base.svelte";
 
-  import { db } from "../firebase.js";
+  import { db } from "../../firebase.js";
   import { collection } from "rxfire/firestore";
 
   let scheduleGroups = db.collection("/schedules");
@@ -66,6 +66,24 @@
       class="bg-green-700 hover:bg-green-900 text-white text-sm m-2 py-2 px-4
       rounded shadow">
       New Group
+    </button>
+    <button
+      on:click={e => window.alert('This feature has not been implemented (yet).')}
+      class="bg-red-700 hover:bg-red-900 text-white text-sm m-2 py-2 px-4
+      rounded shadow">
+      Delete Group
+    </button>
+    <button
+      on:click={e => window.alert('This feature has not been implemented (yet).')}
+      class="bg-green-700 hover:bg-green-900 text-white text-sm m-2 py-2 px-4
+      rounded shadow">
+      Export Group
+    </button>
+    <button
+      on:click={e => window.alert('This feature has not been implemented (yet).')}
+      class="bg-red-700 hover:bg-red-900 text-white text-sm m-2 py-2 px-4
+      rounded shadow">
+      Import Group (Overwrite!)
     </button>
     <button
       on:click={e => window.alert('This feature has not been implemented (yet).')}
