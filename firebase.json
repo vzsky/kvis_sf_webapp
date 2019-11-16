@@ -6,7 +6,10 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [
+    "rewrites": [{
+        "source": "/favicon.png",
+        "destination": "/favicon.png"
+      },
       {
         "source": "**",
         "destination": "/index.html"

@@ -1,40 +1,22 @@
 <script>
   import Base from "./base.svelte";
+  import ScheduleDocEditor from "../../widgets/ScheduleDocEditor.svelte";
 
   import { db } from "../../firebase.js";
   import { collection } from "rxfire/firestore";
+  import { startWith } from "rxjs/operators";
+
+  import get from "lodash/get";
 
   let scheduleGroups = db.collection("/schedules");
 
-  let scheduleDocs = [];
+  let scheduleDocs = collection(scheduleGroups).pipe(startWith([]));
   let scheduleActiveDoc;
-  let scheduleActiveDocIdx;
 
-  const scheduleEditAudienceOptions = ["students", "teachers"];
+  const scheduleEditAudienceOptions = ["Student", "Teacher"];
 
   let scheduleEditAudience;
   let scheduleEditData;
-
-  function reloadData() {
-    scheduleDocs = [];
-    scheduleActiveDoc = null;
-    scheduleActiveDocIdx = null;
-    scheduleGroups
-      .get()
-      .then(snapshot => {
-        scheduleDocs = snapshot.docs;
-      })
-      .catch(error => {
-        window.alert(
-          `An error has occured in reading schedules: ${error["code"]}`
-        );
-        console.error(error);
-      });
-  }
-
-  function saveData() {}
-
-  reloadData();
 </script>
 
 <style>
@@ -54,76 +36,71 @@
     done to the selected group; switching to another group without saving will
     discard all changes.
   </p>
-  <span>
-    <button
-      on:click={reloadData}
-      class="bg-green-700 hover:bg-green-900 text-white text-sm m-2 py-2 px-4
-      rounded shadow">
-      Reload
-    </button>
-    <button
-      on:click={e => window.alert('This feature has not been implemented (yet).')}
-      class="bg-green-700 hover:bg-green-900 text-white text-sm m-2 py-2 px-4
-      rounded shadow">
-      New Group
-    </button>
-    <button
-      on:click={e => window.alert('This feature has not been implemented (yet).')}
-      class="bg-red-700 hover:bg-red-900 text-white text-sm m-2 py-2 px-4
-      rounded shadow">
-      Delete Group
-    </button>
-    <button
-      on:click={e => window.alert('This feature has not been implemented (yet).')}
-      class="bg-green-700 hover:bg-green-900 text-white text-sm m-2 py-2 px-4
-      rounded shadow">
-      Export Group
-    </button>
-    <button
-      on:click={e => window.alert('This feature has not been implemented (yet).')}
-      class="bg-red-700 hover:bg-red-900 text-white text-sm m-2 py-2 px-4
-      rounded shadow">
-      Import Group (Overwrite!)
-    </button>
-    <button
-      on:click={e => window.alert('This feature has not been implemented (yet).')}
-      class="bg-green-700 hover:bg-green-900 text-white text-sm m-2 py-2 px-4
-      rounded shadow">
-      Save Changes
-    </button>
-  </span>
   <span class="m-0 p-0 w-full flex flex-wrap">
     <aside class="w-full md:max-w-xs md:border-r-4">
 
-      <li class="bg-gray-400 text-black text-center">Groups</li>
-      {#each scheduleDocs as doc, idx}
+      <li class="bg-gray-400 text-black text-center">
+        Groups
+        <button
+          on:click={e => window.alert('This feature has not been implemented (yet).')}
+          class="bg-green-700 hover:bg-green-900 text-white text-xs m-2 p-1
+          rounded shadow">
+          New Group
+        </button>
+      </li>
+      {#each $scheduleDocs as doc}
         <li
-          class="border-2 border-gray-400 w-full text-center {scheduleActiveDocIdx === idx ? 'bg-blue-300' : ''}"
+          class="border-2 border-gray-400 w-full text-center {get(scheduleActiveDoc, 'id') === doc['id'] ? 'bg-blue-300' : ''}"
           on:click={e => {
-            scheduleActiveDocIdx = idx;
-            scheduleActiveDoc = scheduleDocs[scheduleActiveDocIdx];
+            scheduleActiveDoc = doc;
           }}>
-          {doc.id}
+          {doc['id']}
         </li>
       {/each}
 
     </aside>
     <section class="flex-1 px-2">
       {#if scheduleActiveDoc}
+        <button
+          on:click={e => window.alert('This feature has not been implemented (yet).')}
+          class="bg-red-700 hover:bg-red-900 text-white text-xs m-2 p-1 rounded
+          shadow">
+          Delete Group
+        </button>
+        <button
+          on:click={e => window.alert('This feature has not been implemented (yet).')}
+          class="bg-green-700 hover:bg-green-900 text-white text-xs m-2 p-1
+          rounded shadow">
+          Export Group
+        </button>
+        <button
+          on:click={e => window.alert('This feature has not been implemented (yet).')}
+          class="bg-green-700 hover:bg-green-900 text-white text-xs m-2 p-1
+          rounded shadow">
+          Save Changes
+        </button>
+        <h6 class="font-bond text-xl">Group: {scheduleActiveDoc['id']}</h6>
         <label>Audience:</label>
         <select bind:value={scheduleEditAudience}>
           {#each scheduleEditAudienceOptions as audience}
             <option
               value={audience}
-              selected={scheduleActiveDoc.data()['audience'] == audience}>
+              selected={scheduleActiveDoc.get('audience') == audience}>
               {audience}
             </option>
           {/each}
         </select>
 
-        {#each scheduleActiveDoc.data()['events'] as event, idx}
-          <p>{JSON.stringify(event)}</p>
-        {/each}
+        <form>
+          {#each scheduleActiveDoc.get('events') as event}
+            <ScheduleDocEditor
+              name={event['name']}
+              location={event['location']}
+              begin={event['begin']}
+              end={event['end']}
+              details={event['details']} />
+          {/each}
+        </form>
       {:else}
         <h1 class="text-2xl text-center">No Group Selected.</h1>
       {/if}

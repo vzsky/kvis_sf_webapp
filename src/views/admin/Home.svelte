@@ -1,4 +1,6 @@
 <script>
+  import { onMount, onDestroy } from "svelte";
+
   import Base from "./base.svelte";
 
   import { auth, db } from "../../firebase.js";
@@ -11,22 +13,30 @@
   let loginInputErrorMsg = null;
   let loginInputRoleMsg = "";
 
-  const firebaseUserSubscription = authState(auth).subscribe(user => {
-    firebaseUser = user;
-    if (user != null) {
-      db.collection("/user_roles")
-        .doc(user["uid"])
-        .get()
-        .then(snapshot => {
-          loginInputRoleMsg = snapshot.get("role");
-        })
-        .catch(error => {
-          window.alert(
-            `An error has occured in user role retrieval: ${error["code"]}`
-          );
-          console.error(error);
-        });
-    }
+  let firebaseUserSubscription;
+
+  onMount(() => {
+    firebaseUserSubscription = authState(auth).subscribe(user => {
+      firebaseUser = user;
+      if (user != null) {
+        db.collection("/user_roles")
+          .doc(user["uid"])
+          .get()
+          .then(snapshot => {
+            loginInputRoleMsg = snapshot.get("role");
+          })
+          .catch(error => {
+            window.alert(
+              `An error has occured in user role retrieval: ${error["code"]}`
+            );
+            console.error(error);
+          });
+      }
+    });
+  });
+
+  onDestroy(() => {
+    firebaseUserSubscription.unsubscribe();
   });
 
   function loginAction() {
@@ -127,7 +137,7 @@
         on:click={loginAction}
         type="submit"
         class="bg-blue-700 hover:bg-blue-900 text-white font-bold py-2 px-6
-        rounded">
+        rounded elevation-2 hover:elevation-6">
         Login
       </button>
 
