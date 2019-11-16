@@ -1,7 +1,7 @@
 import page404 from './views/404.svelte';
-import pageHome from './views/Home.svelte';
-import pageAdminHome from './views/admin/Home.svelte';
-import pageAdminSchedule from './views/admin/Schedule.svelte';
+import pageHome from './views/home.svelte';
+import pageAdminHome from './views/admin/home.svelte';
+import pageAdminSchedule from './views/admin/schedule.svelte';
 
 const routes = {
 	'/': pageHome,
