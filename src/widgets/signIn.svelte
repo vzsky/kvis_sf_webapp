@@ -55,69 +55,85 @@
 </script>
 
 {#if firebaseUser}
-  <div
-    class="container mx-auto my-auto flex flex-col flex-no-wrap items-center
-    justify-center">
-
-    <h1 class="text-2xl p-2">Logged in as: {firebaseUser['user']['email']}</h1>
-    <h3 class="text-sm">User ID: {firebaseUser['user']['uid']}</h3>
-
-    <button
-      on:click={() => auth.signOut()}
-      class="bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-6 rounded
-      align-bottom object-bottom m-6">
-      Logout
-    </button>
-  </div>
-{:else}
-  <form
-    on:submit|preventDefault={loginAction}
-    class="container mx-auto my-auto flex flex-col flex-no-wrap items-center
-    justify-center">
-
-    <h1 class="text-2xl p-2">Please Login</h1>
-
-    {#if loginInputErrorMsg}
-      <h3 class="p-2 text-red-700">
-        An error has occured:
-        <br />
-        {loginInputErrorMsg}
-      </h3>
-    {/if}
-
-    <div class="p-2 flex-inital">
-      <label for="loginInputUsername" class="text-sm font-bold block">
-        Username
-      </label>
-      <input
-        bind:value={loginInputUsername}
-        required
-        type="text"
-        id="loginInputUsername"
-        class="w-64 border-b-2 border-blue-700 focus:outline-none
-        focus:shadow-outline" />
+    <div class='w-full h-screen bg-center bg-cover' style='background-image:url("images/profilebg.jpg");'>
+      <div class='w-full h-full content-center justify-center flex'>
+        <div class='w-full h-full pt-10 pl-10 pr-10 max-w-5xl'>
+          <div> 
+            <center><h1 class='mt-1 md:mt-2 text-xl sm:text-2xl md:text-5xl font-hairline text-gray-100'>{firebaseUser['data']['name']}</h1></center>
+            <center><h1 class='mt-1 md:mt-2 text-xl sm:text-2xl md:text-2xl font-hairline text-gray-100'>{firebaseUser['data']['country']}</h1></center>
+            <center class='flex content-center justify-center'>
+              <h1 class='mt-1 md:mt-2 text-xl sm:text-2xl md:text-6xl font-hairline text-red-500'>Buddies:</h1>
+              <h1 class='mt-1 md:mt-2 ml-2 md:ml-5 text-xl sm:text-2xl md:text-6xl font-hairline text-gray-100'> Nokia</h1>
+              <h1 class='mt-1 md:mt-2 ml-2 md:ml-5 text-xl sm:text-2xl md:text-6xl font-hairline text-gray-100'>08XXXXXXXX</h1>
+            </center>
+            <center>
+              <h1 class='mt-1 md:mt-2 text-xl sm:text-2xl md:text-5xl font-hairline text-red-500'>Excursion route : 1</h1>
+            </center>
+            <center class='flex content-center justify-center'>
+              <h1 class='mt-1 md:mt-2 text-xl sm:text-2xl md:text-5xl font-hairline text-red-500'>Sci Activities : </h1>
+              <h1 class='mt-1 md:mt-2 ml-2 md:ml-5 text-xl sm:text-2xl md:text-5xl font-hairline text-gray-100'>1, 2</h1>
+            </center>
+            <center><h1 class='mt-1 md:mt-2 text-xl sm:text-2xl md:text-5xl font-hairline text-gray-100'>Room {firebaseUser['data']['location_dorm']}</h1></center>
+            <center class='flex content-center justify-center'>
+              <h1 class='mt-1 md:mt-2 text-xl sm:text-2xl md:text-4xl font-hairline text-red-500'>Research:</h1>
+              <h1 class='mt-1 md:mt-2 ml-2 md:ml-5 text-xl sm:text-2xl md:text-4xl font-hairline text-gray-100'>{firebaseUser['data']['project_name']}</h1>
+            </center>
+            <center><h1 class='mt-1 md:mt-2 text-xl sm:text-2xl md:text-5xl font-hairline text-red-500'>Presentation Venue {firebaseUser['data']['location_presentation']}</h1></center>
+          </div>
+        </div>
+      </div>
     </div>
+    {:else} 
+    <div class="w-full h-screen bg-center bg-cover" style='background-image:url("images/loginbg.jpg");'>
+      <div class='w-full flex pt-10 content-center justify-center'>
+        <h1 class='font-hairline antialiased text-gray-100 text-6xl font-mono'> WELCOME </h1>
+      </div>
+      <div class='w-full flex pt-10 content-center justify-center'>
+        <img class='max-w-xs w-full h-full' src='/images/issflogo.png' alt='16th issf and 3rd kvis isf logo'>
+      </div>
+      <div class="w-full flex content-center justify-center">
+        <form class="w-full max-w-sm px-8 pt-6 pb-8 mb-4">
+            {#if loginInputErrorMsg}
+                <h3 class="text-red-300 text-xs italic">
+                    An error has occured: {loginInputErrorMsg.code} <br/>
+                    {loginInputErrorMsg.message}
+                </h3>
+            {/if}
 
-    <div class="p-2 flex-inital">
-      <label for="loginInputPassword" class="text-sm font-bold block">
-        Password
-      </label>
-      <input
-        bind:value={loginInputPassword}
-        required
-        type="password"
-        id="loginInputPassword"
-        class="w-64 border-b-2 border-blue-700 focus:outline-none
-        focus:shadow-outline" />
+            <div class="mb-4">
+                <input 
+                    bind:value={loginInputUsername}
+                    required
+                    type="email"
+                    id="loginInputUsername"
+                    class="bg-gray-700 shadow appearance-none w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="username"
+                    style="border-radius: 17px;"
+                />
+            </div>
+
+            <div class="mb-4">
+                <input 
+                    bind:value={loginInputPassword}
+                    required
+                    type="password"
+                    id="loginInputPassword"
+                    class="bg-gray-700 shadow appearance-none w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="passcode"
+                    style="border-radius: 17px;"
+                />
+            </div>
+            <center>
+            <button 
+                on:click={loginAction}
+                type="submit"
+                class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 focus:outline-none focus:shadow-outline"
+                style="border-radius: 17px;"
+            >
+                Login
+            </button>
+            </center>
+        </form>
+      </div>
     </div>
-
-    <button
-      on:click={loginAction}
-      type="submit"
-      class="bg-blue-700 hover:bg-blue-900 text-white font-bold py-2 px-6
-      rounded elevation-2 hover:elevation-6">
-      Login
-    </button>
-
-  </form>
 {/if}
