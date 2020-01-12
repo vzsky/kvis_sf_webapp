@@ -28,6 +28,11 @@
         Days[id.id].show = !Days[id.id].show
     }
 
+    const pale = (col) => {
+        if (col[0] != '#') return;
+        return col[0]+col[1]+col[2]+col[3]+col[4]+col[5]+col[6]+'A0';
+    }
+
     var Events = [];
     var Days = [];
     onMount(async () => {
@@ -40,7 +45,12 @@
 </script>
 
 <style>
- 
+    .rounded {
+        border-radius: 25px;
+    }
+    .bg-gray-550 {
+        background:#8897ab;
+    }
 </style>
 
 <Base>
@@ -58,7 +68,7 @@
                 
                 {#each Events as ev}
                     {#if eventHappening(ev.begin, ev.end)}
-                        <div class='mt-10 bg-gray-600 rounded'>
+                        <div class='mt-10 bg-gray-600 rounded pt-5 pb-5'>
                             <h1 class='text-xl'>{ev.title}</h1>
                             <p>{ev.details}</p>
                             <p>{toDate(ev.begin)} - {toDate(ev.end)}</p>
@@ -77,7 +87,11 @@
                 {#each Days as day, id} 
 
                     <div class='m-2 rounded bg-gray-600 pt-5 pb-5 hover:text-gray-300' style='background:{day.background}; cursor:pointer;' on:click|preventDefault={()=>toggle({id})}>
-                        <h1 class='text-xl'>{day.title}</h1>
+                        {#if day.details}
+                            <h1 class='text-xl'>{day.title}</h1>
+                        {:else}
+                            <h1 class='text-xl m-3'>{day.title}</h1>
+                        {/if}
                         {#if day.details}
                             <p> {day.details} </p>
                         {/if}
@@ -86,11 +100,11 @@
                     {#if day.show == true}
                         <div>
                             {#each day.content as ev}
-                                <div class='m-2 rounded bg-gray-600' style='background:{day.background};'>
-                                    <h1 class='text-xl'>{ev.title}</h1>
-                                    <p class='text-lg'> {ev.details} </p>
+                                <div class='m-2 rounded bg-gray-550' style='background:{pale(day.background)}'>
+                                    <b><h1 class='text-xl text-gray-900'>{ev.title}</h1></b>
+                                    <p class='text-lg text-gray-900'> {ev.details} </p>
                                     {#if day.details}
-                                        <p> {toTime(ev.begin)} to {toTime(ev.end)} </p>
+                                        <p class='text-md text-gray-900'> {toTime(ev.begin)} to {toTime(ev.end)} </p>
                                     {/if}
                                 </div>
                             {/each}
