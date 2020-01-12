@@ -79,7 +79,8 @@
 
   {#if firebaseUser}
     <div
-      class="w-full h-full p-5 text-center bg-center bg-cover bg-profilebgimage">
+      class="w-full h-full min-h-screen p-5 text-center bg-center bg-cover
+      bg-profilebgimage">
       {#if firebaseUser['data']['name']}
         <h1
           class="mt-1 md:mt-2 text-xl sm:text-2xl md:text-5xl font-hairline
@@ -169,7 +170,7 @@
       </button>
     </div>
   {:else}
-    <div class="w-full h-full bg-center bg-cover bg-loginbgimage">
+    <div class="w-full h-full min-h-screen bg-center bg-cover bg-loginbgimage">
       <div class="w-full flex pt-10 content-center justify-center">
         <h1 class="font-hairline antialiased text-gray-100 text-6xl font-mono">
           WELCOME
