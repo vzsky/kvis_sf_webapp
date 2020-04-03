@@ -77,6 +77,24 @@ const Schedule = async () => {
 	return [Events, Days];
 }
 
+const Announcement = async () => {
+	var Ann = []
+	var Ann_collections = [];
+	await firestore.collection('contents').doc("C4dWDKhKniD3txj4qqhc").get().then((doc) => {
+		if (doc.exists) {
+			doc.data().content.forEach((obj) => { Ann_collections.push(obj); console.log(obj)})
+		}
+	})
+	for (let ann in Ann_collections) {
+		await firestore.collection('contents').doc(Ann_collections[ann]).get().then((doc) => {
+			if (doc.exists){
+				Ann.push(doc.data())
+			}
+		})
+	}
+	return Ann;
+}
+
 export {
 	app,
 	auth,
@@ -84,5 +102,6 @@ export {
 	authUserObservable,
 	getEmailByUsername,
 	Schedule,
+	Announcement,
 };
 export default firebase;
